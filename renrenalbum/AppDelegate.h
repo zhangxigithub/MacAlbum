@@ -7,10 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "User.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 {
     NSMutableSet *allPhoto;
+    User *userWC;
+    
 }
 @property (assign) IBOutlet NSWindow *window;
 @property (weak) IBOutlet NSTextField *ownerLable;
@@ -25,6 +28,14 @@
 @property (weak) IBOutlet NSButton *but1;
 
 @property (weak) IBOutlet NSButton *but2;
+
+@property (weak) IBOutlet NSTextField *idLabel;
+
+@property (weak) IBOutlet NSButton *searchButton;
+
 - (IBAction)home:(id)sender;
+
+- (IBAction)search:(id)sender;
+
 
 @end

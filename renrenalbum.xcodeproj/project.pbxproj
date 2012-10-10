@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		333311231625BB2B008C9187 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 333311211625BB2B008C9187 /* User.m */; };
+		333311241625BB2B008C9187 /* User.xib in Resources */ = {isa = PBXBuildFile; fileRef = 333311221625BB2B008C9187 /* User.xib */; };
 		339F4C4816252F7B00EA3C03 /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 339F4C4716252F7B00EA3C03 /* libxml2.2.dylib */; };
 		339F4C771625305C00EA3C03 /* Test-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 339F4C711625305C00EA3C03 /* Test-Info.plist */; };
 		339F4C941625310800EA3C03 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 339F4C911625310800EA3C03 /* TFHpple.m */; };
@@ -32,6 +34,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		333311201625BB2B008C9187 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		333311211625BB2B008C9187 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		333311221625BB2B008C9187 /* User.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = User.xib; sourceTree = "<group>"; };
 		339F4C4716252F7B00EA3C03 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		339F4C711625305C00EA3C03 /* Test-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Test-Info.plist"; sourceTree = "<group>"; };
 		339F4C901625310800EA3C03 /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
@@ -164,6 +169,9 @@
 				33D4FE4816245F5100071D4B /* AppDelegate.h */,
 				33D4FE4916245F5100071D4B /* AppDelegate.m */,
 				33D4FE4B16245F5200071D4B /* MainMenu.xib */,
+				333311201625BB2B008C9187 /* User.h */,
+				333311211625BB2B008C9187 /* User.m */,
+				333311221625BB2B008C9187 /* User.xib */,
 				339F4C991625363800EA3C03 /* JSONKit.h */,
 				339F4C9A1625363800EA3C03 /* JSONKit.m */,
 				339F4C961625311700EA3C03 /* XPathQuery.m */,
@@ -245,6 +253,7 @@
 				33D4FE4D16245F5200071D4B /* MainMenu.xib in Resources */,
 				339F4C771625305C00EA3C03 /* Test-Info.plist in Resources */,
 				339F4CCD162581AE00EA3C03 /* folder_download.icns in Resources */,
+				333311241625BB2B008C9187 /* User.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +279,7 @@
 				339F4CC2162570B100EA3C03 /* AFURLConnectionOperation.m in Sources */,
 				339F4CC3162570B100EA3C03 /* AFXMLRequestOperation.m in Sources */,
 				339F4CC4162570B100EA3C03 /* UIImageView+AFNetworking.m in Sources */,
+				333311231625BB2B008C9187 /* User.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -27,14 +27,6 @@
 
 @implementation AppDelegate
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
-    allPhoto = [NSMutableSet set];
-    count = 0;
-    //NSLog(@"%@",[self web:@"http://photo.renren.com/photo/270840245/album-514738413"]);
-    
-    
-}
 
 -(BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag
 {
@@ -43,6 +35,95 @@
         [self.window makeKeyAndOrderFront:nil];
     }
     return YES;
+}
+
+
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+    allPhoto = [NSMutableSet set];
+
+    //NSLog(@"%@",[self web:@"http://photo.renren.com/photo/270840245/album-514738413"]);
+    
+    
+}
+
+-(NSArray *)getAlbumList:(NSString *)user
+{
+    NSString *url = [NSString stringWithFormat:kAlbumList,user];
+    NSLog(@"%@",url);
+    [self web:url];
+    [NSThread sleepForTimeInterval:1];
+    
+    TFHpple * doc       = [[TFHpple alloc] initWithHTMLData:[self webData:url]];
+    
+    NSLog(@"1");
+    NSMutableArray *albumName = [NSMutableArray array];
+    NSMutableArray *albumID   = [NSMutableArray array];
+    
+    //NSMutableArray *name = [NSMutableArray array];
+    
+    NSArray * idElements    = [doc searchWithXPathQuery:@"//a[@class='album-title']"];
+    NSArray * nameElements  = [doc searchWithXPathQuery:@"//span[@class='album-name']"];
+    NSArray * userElements  = [doc searchWithXPathQuery:@"//ul[@class='nav-tabs']/li/a/strong"];
+    
+    
+    
+    for(TFHppleElement * element in idElements)
+    {
+        NSString *name = [element objectForKey:@"href"];
+        NSRange start = [name rangeOfString:@"album-"];
+        name = [name substringFromIndex:start.location+start.length];
+        name = [name substringToIndex:9];
+        
+        [albumID addObject:name];
+    }
+    
+    for(TFHppleElement * element in nameElements)
+    {
+        NSString *name = [[[element children] lastObject] content];
+        if(name != Nil)
+            [albumName addObject:name];
+    }
+    
+    TFHppleElement * element = [[userElements lastObject] firstChild];
+    NSString *userName = [element content];
+    
+    NSLog(@"%@\n%@",albumID,albumName);
+    NSLog(@"%ld,%ld",albumID.count,albumName.count);
+    
+    //NSLog(@"%@",elements);
+    NSMutableArray *albums = [NSMutableArray array];
+    for(int i = 0;i<albumID.count;i++)
+    {
+        NSDictionary *album = @{@"title":[albumName objectAtIndex:i],@"id":[albumID objectAtIndex:i]};
+        [albums addObject:album];
+    }
+    
+    
+    if(userName != nil)
+    {
+        userWC = [[User alloc] initWithWindowNibName:@"User"];
+        userWC.albums   = albums;
+        userWC.userName = userName;
+        userWC.userID   = self.idLabel.stringValue;
+        [userWC showWindow:nil];
+        
+    }else
+    {
+        NSAlert *alert = [NSAlert alertWithMessageText:@"获取失败"
+                                         defaultButton:@"哦"
+                                       alternateButton:nil
+                                           otherButton:nil
+                             informativeTextWithFormat:@""];
+        
+        [alert beginSheetModalForWindow:self.window
+                          modalDelegate:nil
+                         didEndSelector:nil
+                            contextInfo:nil];
+    }
+    
+    
+    return nil;
 }
 
 
@@ -114,155 +195,26 @@
     NSData *data =  [NSURLConnection sendSynchronousRequest:request
                                           returningResponse:nil
                                                       error:nil];
+    NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"%@",s);
+    s = [s stringByReplacingOccurrencesOfString:@"\n" withString:@""];
     
-    
-    return data;
-}
--(NSSet *)getUser:(NSString *)user withAlbum:(NSString *)album
-{
-    for(int i = 1;i<=5;i++)
-    {
-        NSString *url   = [NSString stringWithFormat:kAlbumURL,user,album,i];
-        
-        NSArray *images = [self imagesInPage:url];
-        
-        return [NSSet setWithArray:images];
-        //[allPhoto addObjectsFromArray:images];
-        
-        NSLog(@"%ld",allPhoto.count);
-    }
-    
-    
-    
-    
-}
-- (IBAction)start:(id)sender {
-    
-    
-    NSSavePanel *panel = [NSSavePanel savePanel];
-    panel.nameFieldStringValue = self.ownerLable2.stringValue;
-    
-    [panel beginWithCompletionHandler:^(NSInteger result) {
-        if(result == 0) return ;
-        [self.but1 setEnabled:NO];
-        [self.but2 setEnabled:NO];
-       
-        BACK(^{
-            
-            self.stateLabel.stringValue = @"获取中...";
-            NSArray *albumList =  [self albumList:self.ownerLable2.stringValue];
-            
-            for(NSString *album in albumList)
-            {
-                NSSet *set =[self getUser:self.ownerLable2.stringValue
-                    withAlbum:album];
-                [allPhoto addObject:set];
-            }
-            
-            
-            [self download:panel.URL withSet:allPhoto];
-            count = 0;
-            self.stateLabel.stringValue = @"完成";
-            [allPhoto removeAllObjects];
-        });
-        
-    }];
+    return [s dataUsingEncoding:NSUTF8StringEncoding];
 }
 
-- (IBAction)start2:(id)sender {
-    
-    NSSavePanel *panel = [NSSavePanel savePanel];
-    panel.nameFieldStringValue = self.albumLable.stringValue;
-    
-    [panel beginWithCompletionHandler:^(NSInteger result) {
-        if(result == 0) return ;
-        self.stateLabel.stringValue = @"获取中...";
-        
-        [self.but1 setEnabled:NO];
-        [self.but2 setEnabled:NO];
-        
-        BACK(^{
-            NSSet *set =[self getUser:self.ownerLable.stringValue withAlbum:self.albumLable.stringValue];
-            for(id obj in set)
-            {
-                [allPhoto addObject:obj];
-            }
-            
-            [self download:panel.URL withSet:allPhoto];
-            count = 0;
-            self.stateLabel.stringValue = @"完成";
-            [allPhoto removeAllObjects];
-        });
-    }];
-    
-    
-}
- static int count;
--(void)download:(NSURL *)url withSet:(NSSet *)array
-{
-    NSFileManager *manager = [NSFileManager defaultManager];
-    [manager createDirectoryAtURL:url
-      withIntermediateDirectories:YES
-                       attributes:nil
-                            error:nil];
-   
-    int album = 0;
-    
-    for(id image in array)
-    {
-        count ++;
-        
-        if([image isKindOfClass:[NSString class]])
-        {
-            [self downloadImage:image to:url];
-           
-            self.stateLabel.stringValue = [NSString stringWithFormat:@"下载..%d/%d",count,[self count]];
-        }else if([image isKindOfClass:[NSSet class]])
-        {
-            [self download:[url URLByAppendingPathComponent:[NSString stringWithFormat:@"%d",album++]] withSet:image];
-        }
-        
-        
-        
-    }
-    [self.but1 setEnabled:YES];
-    [self.but2 setEnabled:YES];
 
-}
-
--(void)downloadImage:(NSString *)image to:(NSURL *)url
-{
-    NSURL *imageURL = [NSURL URLWithString:image];
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:imageURL];
-    
-    NSData *data = [NSURLConnection sendSynchronousRequest:request
-                                         returningResponse:nil
-                                                     error:nil];
-    
-    NSURL *newFile = [url URLByAppendingPathComponent:[image lastPathComponent]];
-    
-    [data writeToURL:newFile atomically:NO];
-    
-}
--(int)count
-{
-    int count = 0;
-    for(id obj in allPhoto)
-    {
-        if([obj isKindOfClass:[NSString class]])
-        {
-            count ++;
-        }else if([obj isKindOfClass:[NSSet class]])
-        {
-            NSSet *set = obj;
-            count += set.count;
-        }
-    }
-    return count;
-}
 
 - (IBAction)home:(id)sender {
     
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://zhangxi.me"]];
+}
+
+- (IBAction)search:(id)sender {
+    
+    [self.searchButton setTitle:@"获取中..."];
+    [self.searchButton setEnabled:NO];
+    [self getAlbumList:self.idLabel.stringValue];
+    [self.searchButton setEnabled:YES];
+    self.searchButton.title = @"获取相册";
 }
 @end
