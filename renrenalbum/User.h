@@ -20,6 +20,13 @@
 
 @property (weak) IBOutlet NSPopUpButton *albumPopUp;
 @property (weak) IBOutlet NSButton *selectAll;
+
+
+@property (weak) IBOutlet NSButton *downloadButton;
+@property (weak) IBOutlet NSProgressIndicator *statusBar;
+
+- (IBAction)checkAll:(id)sender;
+
 - (IBAction)download:(id)sender;
 
 @end

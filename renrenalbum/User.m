@@ -57,6 +57,15 @@
     [self.albumPopUp addItemsWithTitles:title];
 }
 
+- (IBAction)checkAll:(id)sender {
+    
+    BOOL all = [[NSNumber numberWithInt:self.selectAll.intValue] boolValue];
+    if(all)
+        [self.albumPopUp setEnabled:NO];
+    else
+        [self.albumPopUp setEnabled:YES];
+}
+
 - (IBAction)download:(id)sender
 {
     NSSavePanel *panel = [NSSavePanel savePanel];
@@ -64,6 +73,8 @@
     
     [panel beginWithCompletionHandler:^(NSInteger result) {
         if(result == 0) return ;
+        
+        
         
         NSFileManager *manager = [NSFileManager defaultManager];
         [manager createDirectoryAtURL:panel.URL
@@ -236,5 +247,18 @@ static int count;
     s = [s stringByReplacingOccurrencesOfString:@"\n" withString:@""];
     
     return [s dataUsingEncoding:NSUTF8StringEncoding];
+}
+
+-(void)finish:(BOOL)finish
+{
+    if(finish)
+    {
+        [self.downloadButton setHidden:NO];
+        [self.statusBar setHidden:YES];
+    }else
+    {
+        [self.downloadButton setHidden:YES];
+        [self.statusBar setHidden:NO];
+    }
 }
 @end

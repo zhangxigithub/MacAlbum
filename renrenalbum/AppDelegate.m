@@ -196,7 +196,7 @@
                                           returningResponse:nil
                                                       error:nil];
     NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog(@"%@",s);
+   // NSLog(@"%@",s);
     s = [s stringByReplacingOccurrencesOfString:@"\n" withString:@""];
     
     return [s dataUsingEncoding:NSUTF8StringEncoding];
