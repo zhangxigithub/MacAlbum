@@ -8,12 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 #import "User.h"
-
+#import "Login.h"
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 {
     NSMutableSet *allPhoto;
     User *userWC;
-    
+    Login *login;
 }
 @property (assign) IBOutlet NSWindow *window;
 @property (weak) IBOutlet NSTextField *ownerLable;
@@ -37,5 +37,7 @@
 
 - (IBAction)search:(id)sender;
 
+- (IBAction)showLogin:(id)sender;
+- (IBAction)myAlbum:(id)sender;
 
 @end

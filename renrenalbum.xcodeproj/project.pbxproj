@@ -31,6 +31,9 @@
 		33D4FE4716245F5100071D4B /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 33D4FE4516245F5100071D4B /* Credits.rtf */; };
 		33D4FE4A16245F5100071D4B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 33D4FE4916245F5100071D4B /* AppDelegate.m */; };
 		33D4FE4D16245F5200071D4B /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33D4FE4B16245F5200071D4B /* MainMenu.xib */; };
+		432CE70B16269BD600081589 /* Login.m in Sources */ = {isa = PBXBuildFile; fileRef = 432CE70916269BD600081589 /* Login.m */; };
+		432CE70C16269BD600081589 /* Login.xib in Resources */ = {isa = PBXBuildFile; fileRef = 432CE70A16269BD600081589 /* Login.xib */; };
+		432CE70F16269BF400081589 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 432CE70E16269BF400081589 /* WebKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +84,10 @@
 		33D4FE4816245F5100071D4B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		33D4FE4916245F5100071D4B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		33D4FE4C16245F5200071D4B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		432CE70816269BD600081589 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Login.h; sourceTree = "<group>"; };
+		432CE70916269BD600081589 /* Login.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Login.m; sourceTree = "<group>"; };
+		432CE70A16269BD600081589 /* Login.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Login.xib; sourceTree = "<group>"; };
+		432CE70E16269BF400081589 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				432CE70F16269BF400081589 /* WebKit.framework in Frameworks */,
 				339F4C4816252F7B00EA3C03 /* libxml2.2.dylib in Frameworks */,
 				33D4FE3716245F5100071D4B /* Cocoa.framework in Frameworks */,
 			);
@@ -125,6 +133,7 @@
 		33D4FE2716245F5100071D4B = {
 			isa = PBXGroup;
 			children = (
+				432CE70E16269BF400081589 /* WebKit.framework */,
 				339F4CCC162581AE00EA3C03 /* folder_download.icns */,
 				339F4C4716252F7B00EA3C03 /* libxml2.2.dylib */,
 				33D4FE3C16245F5100071D4B /* renrenalbum */,
@@ -169,6 +178,9 @@
 				33D4FE4816245F5100071D4B /* AppDelegate.h */,
 				33D4FE4916245F5100071D4B /* AppDelegate.m */,
 				33D4FE4B16245F5200071D4B /* MainMenu.xib */,
+				432CE70816269BD600081589 /* Login.h */,
+				432CE70916269BD600081589 /* Login.m */,
+				432CE70A16269BD600081589 /* Login.xib */,
 				333311201625BB2B008C9187 /* User.h */,
 				333311211625BB2B008C9187 /* User.m */,
 				333311221625BB2B008C9187 /* User.xib */,
@@ -254,6 +266,7 @@
 				339F4C771625305C00EA3C03 /* Test-Info.plist in Resources */,
 				339F4CCD162581AE00EA3C03 /* folder_download.icns in Resources */,
 				333311241625BB2B008C9187 /* User.xib in Resources */,
+				432CE70C16269BD600081589 /* Login.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,6 +293,7 @@
 				339F4CC3162570B100EA3C03 /* AFXMLRequestOperation.m in Sources */,
 				339F4CC4162570B100EA3C03 /* UIImageView+AFNetworking.m in Sources */,
 				333311231625BB2B008C9187 /* User.m in Sources */,
+				432CE70B16269BD600081589 /* Login.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

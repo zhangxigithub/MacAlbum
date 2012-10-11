@@ -44,7 +44,8 @@
 
     //NSLog(@"%@",[self web:@"http://photo.renren.com/photo/270840245/album-514738413"]);
     
-    
+    login = [[Login alloc] initWithWindowNibName:@"Login"];
+    [login showWindow:nil];
 }
 
 -(NSArray *)getAlbumList:(NSString *)user
@@ -55,7 +56,15 @@
     NSLog(@"first get web");
     [NSThread sleepForTimeInterval:1];
     
-    TFHpple * doc       = [[TFHpple alloc] initWithHTMLData:[self webData:url]];
+    NSData *webData = [self webData:url];
+    
+    NSString *str = [[NSString alloc] initWithData:webData encoding:NSUTF8StringEncoding];
+    [str writeToFile:[NSString stringWithFormat:@"%@/log.txt",NSHomeDirectory()]
+          atomically:YES
+            encoding:NSUTF8StringEncoding
+               error:nil];
+    
+    TFHpple * doc       = [[TFHpple alloc] initWithHTMLData:webData];
     NSLog(@"second get web");
     NSLog(@"1");
     NSMutableArray *albumName = [NSMutableArray array];
@@ -225,4 +234,12 @@
     self.searchButton.title = @"获取相册";
         });
 }
+
+- (IBAction)showLogin:(id)sender {
+    login = [[Login alloc] initWithWindowNibName:@"Login"];
+    [login showWindow:nil];
+}
+
+- (IBAction)myAlbum:(id)sender {
+   }
 @end
