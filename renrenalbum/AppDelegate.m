@@ -72,11 +72,17 @@
     for(TFHppleElement * element in idElements)
     {
         NSString *name = [element objectForKey:@"href"];
+        NSLog(@"%@",name);
         NSRange start = [name rangeOfString:@"album-"];
-        name = [name substringFromIndex:start.location+start.length];
-        name = [name substringToIndex:9];
         
-        [albumID addObject:name];
+        
+        if(start.location<=name.length)
+        {
+            name = [name substringFromIndex:start.location+start.length];
+            name = [name substringToIndex:9];
+            
+            [albumID addObject:name];
+        }
     }
     
     for(TFHppleElement * element in nameElements)
