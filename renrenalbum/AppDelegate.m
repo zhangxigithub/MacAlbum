@@ -52,15 +52,16 @@
     NSString *url = [NSString stringWithFormat:kAlbumList,user];
     NSLog(@"%@",url);
     [self web:url];
+    NSLog(@"first get web");
     [NSThread sleepForTimeInterval:1];
     
     TFHpple * doc       = [[TFHpple alloc] initWithHTMLData:[self webData:url]];
-    
+    NSLog(@"second get web");
     NSLog(@"1");
     NSMutableArray *albumName = [NSMutableArray array];
     NSMutableArray *albumID   = [NSMutableArray array];
     
-    //NSMutableArray *name = [NSMutableArray array];
+
     
     NSArray * idElements    = [doc searchWithXPathQuery:@"//a[@class='album-title']"];
     NSArray * nameElements  = [doc searchWithXPathQuery:@"//span[@class='album-name']"];
@@ -106,7 +107,7 @@
         userWC.albums   = albums;
         userWC.userName = userName;
         userWC.userID   = self.idLabel.stringValue;
-        [userWC showWindow:nil];
+        MAIN(^{[userWC showWindow:nil];});
         
     }else
     {
@@ -210,11 +211,12 @@
 }
 
 - (IBAction)search:(id)sender {
-    
+    BACK(^{
     [self.searchButton setTitle:@"获取中..."];
     [self.searchButton setEnabled:NO];
     [self getAlbumList:self.idLabel.stringValue];
     [self.searchButton setEnabled:YES];
     self.searchButton.title = @"获取相册";
+        });
 }
 @end

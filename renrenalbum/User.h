@@ -9,7 +9,10 @@
 #import <Cocoa/Cocoa.h>
 
 @interface User : NSWindowController
-
+{
+    long int total;
+    BOOL needCancel;
+}
 
 @property(nonatomic,strong) NSArray *albums;
 @property(nonatomic,strong) NSString *userName;
@@ -23,9 +26,13 @@
 
 
 @property (weak) IBOutlet NSButton *downloadButton;
+
+@property (weak) IBOutlet NSButton *cancel;
 @property (weak) IBOutlet NSProgressIndicator *statusBar;
 
 - (IBAction)checkAll:(id)sender;
+
+- (IBAction)cancelDownload:(id)sender;
 
 - (IBAction)download:(id)sender;
 

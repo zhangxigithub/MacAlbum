@@ -34,6 +34,7 @@
     self = [super initWithWindow:window];
     if (self) {
         // Initialization code here.
+
     }
     
     return self;
@@ -45,7 +46,8 @@
     self.userLabel.stringValue = self.userName;
     self.window.title = self.userName;
     
-    
+    needCancel = NO;
+    [self finish:YES];
     
     NSMutableArray *title = [NSMutableArray array];
     for(NSDictionary *album in self.albums)
@@ -66,6 +68,10 @@
         [self.albumPopUp setEnabled:YES];
 }
 
+- (IBAction)cancelDownload:(id)sender {
+    needCancel = YES;
+}
+
 - (IBAction)download:(id)sender
 {
     NSSavePanel *panel = [NSSavePanel savePanel];
@@ -75,6 +81,7 @@
         if(result == 0) return ;
         
         
+        [self finish:NO];
         
         NSFileManager *manager = [NSFileManager defaultManager];
         [manager createDirectoryAtURL:panel.URL
@@ -87,7 +94,7 @@
         
         if(all)
         {
-            BACK(^{ [self downloadAll:panel.URL];});
+            BACK(^{[self downloadAll:panel.URL];});
         }else
         {
             NSDictionary *dic = [self.albums objectAtIndex:self.albumPopUp.indexOfSelectedItem];
@@ -99,6 +106,7 @@
                 NSSet *imageURLs = [self imagesInAlbum:albumID];
                 [self downloadSet:imageURLs toURL:[panel.URL URLByAppendingPathComponent:albumName]];
                 NSLog(@"%@",imageURLs);
+                [self finish:YES];
             });
             
         }
@@ -121,6 +129,7 @@
         
         NSLog(@"%@",imageURLs);
     }
+    [self finish:YES];
 }
 
 
@@ -133,9 +142,19 @@ static int count;
       withIntermediateDirectories:YES
                        attributes:nil
                             error:nil];
+
+    float count = 1;
+    
     for(NSString *image in set)
     {
+        count ++;
         [self downloadImage:image to:url];
+        [self.statusBar setDoubleValue:count/set.count];
+        if(needCancel)
+        {
+            needCancel = NO;
+            return;
+        }
     }
 }
 
@@ -161,7 +180,7 @@ static int count;
       withIntermediateDirectories:YES
                        attributes:nil
                             error:nil];
-    
+    [self finish:NO];
     int album = 0;
     
     for(id image in array)
@@ -251,14 +270,13 @@ static int count;
 
 -(void)finish:(BOOL)finish
 {
-    if(finish)
-    {
-        [self.downloadButton setHidden:NO];
-        [self.statusBar setHidden:YES];
-    }else
-    {
-        [self.downloadButton setHidden:YES];
-        [self.statusBar setHidden:NO];
-    }
+    [self.downloadButton setHidden:!finish];
+    [self.statusBar setHidden:finish];
+    [self.cancel setHidden:finish];
+    [self.albumPopUp setEnabled:finish];
+    [self.selectAll setEnabled:finish];
 }
+
+
+
 @end
