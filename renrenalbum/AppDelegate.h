@@ -25,6 +25,7 @@
 
 @property (weak) IBOutlet NSTextField *stateLabel;
 
+
 @property (weak) IBOutlet NSButton *but1;
 
 @property (weak) IBOutlet NSButton *but2;
@@ -39,5 +40,7 @@
 
 - (IBAction)showLogin:(id)sender;
 - (IBAction)myAlbum:(id)sender;
+
+
 
 @end

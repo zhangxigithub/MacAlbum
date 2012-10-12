@@ -20,6 +20,8 @@
 
 
 @property (weak) IBOutlet NSTextField *userLabel;
+@property (weak) IBOutlet NSTextField *albumProgressLable;
+
 
 @property (weak) IBOutlet NSPopUpButton *albumPopUp;
 @property (weak) IBOutlet NSButton *selectAll;

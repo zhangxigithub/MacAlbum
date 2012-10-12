@@ -118,16 +118,22 @@
 
 -(void)downloadAll:(NSURL *)url
 {
+    int i = 0;
     for (NSDictionary *album in self.albums)
     {
+        self.albumProgressLable.stringValue = [NSString stringWithFormat:@"%d/%ld",i++,self.albums.count];
+        
         NSString *albumName = [album objectForKey:@"title"];
         NSString *albumID   = [album objectForKey:@"id"];
         
         NSSet *imageURLs = [self imagesInAlbum:albumID];
         
-        [self downloadSet:imageURLs toURL:[url URLByAppendingPathComponent:albumName]];
-        
-        NSLog(@"%@",imageURLs);
+       if([self downloadSet:imageURLs toURL:[url URLByAppendingPathComponent:albumName]] == NO)
+       {
+            needCancel = NO;
+           [self finish:YES];
+            return;
+       }
     }
     [self finish:YES];
 }
@@ -135,7 +141,7 @@
 
 static int count;
 
--(void)downloadSet:(NSSet *)set toURL:(NSURL *)url
+-(BOOL)downloadSet:(NSSet *)set toURL:(NSURL *)url
 {
     NSFileManager *manager = [NSFileManager defaultManager];
     [manager createDirectoryAtURL:url
@@ -153,7 +159,7 @@ static int count;
         if(needCancel)
         {
             needCancel = NO;
-            return;
+            return NO;
         }
     }
 }
