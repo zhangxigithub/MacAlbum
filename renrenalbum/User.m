@@ -162,6 +162,7 @@ static int count;
             return NO;
         }
     }
+    return YES;
 }
 
 -(void)download:(NSString *)image atURL:(NSURL *)position

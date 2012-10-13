@@ -46,6 +46,75 @@
     
     login = [[Login alloc] initWithWindowNibName:@"Login"];
     [login showWindow:nil];
+    
+    
+    
+    
+    [self downloadMoko];
+    
+    
+    
+    
+}
+
+-(void)downloadMoko
+{
+    NSString *urlStr = @"http://www.moko.cc/channels/post/23/%d.html";
+    for(int i =1;i<=10;i++)
+    {
+        NSData *webData = [self webData:[NSString stringWithFormat:urlStr,i]];
+        TFHpple  * doc       = [[TFHpple alloc] initWithHTMLData:webData];
+        NSArray  *elements = [doc searchWithXPathQuery:@"//ul[@class='post small-post']/div/a"];
+        for(TFHppleElement *element in elements)
+        {
+            NSString *person = [element objectForKey:@"href"];
+            NSString *personURL = [NSString stringWithFormat:@"http://www.moko.cc%@",person];
+            
+            TFHpple  *personPage       = [[TFHpple alloc] initWithHTMLData:[self webData:personURL]];
+            NSArray  *images = [personPage searchWithXPathQuery:@"//p[@class='picBox']/img"];
+            TFHppleElement *title = [[personPage searchWithXPathQuery:@"//div[@class='info']/h2/a"] lastObject];
+            
+            NSLog(@"%@",[title.firstChild content]);
+            NSLog(@"%ld",images.count);
+            NSString *t = [title.firstChild content];
+            NSString *path = @"/Users/zhangxi/Desktop/MOKO/%@";
+
+           
+            [[NSFileManager defaultManager] createDirectoryAtPath:[NSString stringWithFormat:path,t]
+                                     withIntermediateDirectories:YES
+                                                      attributes:nil
+                                                           error:nil];
+            
+            
+            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:path,t]];
+            
+            for(TFHppleElement *image in images)
+            {
+                
+                NSURL *name = [NSURL URLWithString:[image objectForKey:@"src2"]];
+                //NSLog(@"%@",name);
+                [self downloadImage:[image objectForKey:@"src2"] to:[NSString stringWithFormat:path,t]];
+            }
+        }
+        
+    }
+}
+-(void)downloadImage:(NSString *)image to:(NSString *)url
+{
+    NSURL *imageURL = [NSURL URLWithString:image];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:imageURL];
+    
+    NSData *data = [NSURLConnection sendSynchronousRequest:request
+                                         returningResponse:nil
+                                                     error:nil];
+    
+    NSString *newFile = [NSString stringWithFormat:@"%@/%@",url,[imageURL lastPathComponent]];
+    //NSLog(@"%@",url);
+    
+    NSLog(@"%@",newFile);
+    [data writeToFile:newFile atomically:YES];
+
+    
 }
 
 -(NSArray *)getAlbumList:(NSString *)user
